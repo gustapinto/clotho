@@ -1,1 +1,0 @@
-["^ ","~$get-all",["^ ","~:row",3,"~:col",1,"~:fixed-arities",["~#set",[0]],"~:name","^0","~:ns","~$knit.features.services.use-cases","~:top-ns","^7","~:arities",["^ ","~i0",["^ ","~:ret","~:seq","~:arglist-str","[]"]],"~:type","~:fn"],"~:filename","/home/gustavo/repositorios/knit/src/knit/features/services/use_cases.clj"]
