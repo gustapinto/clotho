@@ -1,2 +1,3 @@
-# knit
-Knitting a API mesh the easy way
+# Knit
+
+A, :construction: under construction :construction: Clojure based service mesh
