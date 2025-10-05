@@ -1,3 +1,3 @@
 # Knit
 
-A, :construction: under construction :construction: Clojure based service mesh
+A :construction: under construction :construction: Clojure based service mesh
