@@ -5,8 +5,9 @@
 (defn handle
   [routes]
   (fn [request]
-    (let [method (:request-method request)
-          path (:uri request)
-          handler (some (fn [[m p h]] (when (and (= m method) (= p path)) h)) routes)]
-      ((middleware/wrap-log (middleware/wrap-json (or handler response/not-found)))
+    (let [path (:uri request)
+          handler (some (fn [[p h]]
+                          (when (not= (re-matches p path) nil) h)) routes)]
+      ((middleware/wrap-log
+         (or handler (middleware/wrap-json response/not-found)))
        request))))

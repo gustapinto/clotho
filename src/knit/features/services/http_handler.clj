@@ -1,16 +1,16 @@
 (ns knit.features.services.http-handler
-  (:require [knit.features.services.use-cases :as service-use-cases]))
+  (:require [clojure.string :as string]
+            [knit.features.services.use-cases :refer [call-service]]
+            [knit.lib.http.response :refer [not-found]]))
 
-(defn get-all
-  [_]
-  (let [all-services (service-use-cases/get-all)]
-    {:status 200
-     :body all-services}))
+(defn get-all-services
+  [services]
+  (fn [_] {:status 200 :body services}))
 
-(defn upsert
-  [_]
-  {:status 204})
-
-(defn redirect
-  [_]
-  {:status 302})
+(defn proxy-to-service
+  [services]
+  (fn [request] (let [path (:uri request)
+                      service (some (fn [service]
+                                        (when (string/starts-with? path (:prefix service)) service)) services)]
+                  (cond (= service nil) (not-found request)
+                        :else (call-service request service)))))

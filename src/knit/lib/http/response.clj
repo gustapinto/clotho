@@ -1,6 +1,6 @@
 (ns knit.lib.http.response)
 
-(defn error-
+(defn- error
   ([code retriable]
    {:error code :retriable retriable})
 
@@ -10,4 +10,4 @@
 (defn not-found
   [request]
   {:status 404
-   :body (error- "route-not-found" false {:message "route not found" :route (:uri request)})})
+   :body (error "route-not-found" false {:message "route not found" :route (:uri request)})})

@@ -4,8 +4,11 @@
                  [org.clojure/tools.logging "1.3.0"]
                  [ring/ring-core "1.15.3"]
                  [ring/ring-jetty-adapter "1.15.3"]
-                 [org.slf4j/slf4j-simple "2.0.16"]]
+                 [org.slf4j/slf4j-simple "2.0.16"]
+                 [clj-commons/clj-yaml "1.0.29"]
+                 [clj-http "3.13.1"]]
   :main ^:skip-aot knit.core
   :target-path "target/%s"
   :profiles {:uberjar {:aot :all
-                       :jvm-opts ["-Dclojure.compiler.direct-linking=true"]}})
+                       :jvm-opts ["-Dclojure.compiler.direct-linking=true"]
+                       :uberjar-name "knit.jar"}})

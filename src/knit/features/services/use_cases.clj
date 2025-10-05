@@ -1,6 +1,10 @@
-(ns knit.features.services.use-cases)
+(ns knit.features.services.use-cases
+  (:require [clj-http.client :as client]))
 
-(defn get-all
-  []
-  (for [_ (range 1 11)
-        :let [obj {:id (random-uuid) :data {:mock (format "mock-%s" (random-uuid))}}]] obj))
+(defn call-service
+  [request service]
+  (let [request-uri (:uri request)
+        base-url (:base-url service)
+        target-url (format "%s/%s" base-url request-uri)]
+  (client/request (merge request {:throw-exceptions false
+                                  :url target-url}))))

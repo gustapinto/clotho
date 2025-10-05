@@ -1,0 +1,4 @@
+services:
+  - name: "example-service"
+    prefix: "/exs"
+    base-url: "https://webhook.site/ed111a2f-21e9-4f22-876b-3cf1db0c6aec"
