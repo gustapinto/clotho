@@ -1,7 +1,7 @@
-(ns knit.features.services.http-handler
+(ns clotho.features.services.http-handler
   (:require [clojure.string :as string]
-            [knit.features.services.use-cases :refer [call-service]]
-            [knit.lib.http.response :refer [not-found]]))
+            [clotho.features.services.use-cases :refer [call-service]]
+            [clotho.lib.http.response :refer [not-found]]))
 
 (defn get-all-services
   [services]

@@ -1,4 +1,4 @@
-(ns knit.lib.file.file
+(ns clotho.lib.file.file
   (:require [clojure.java.io :as io]))
 
 (defn read-as-str

@@ -1,4 +1,4 @@
-(ns knit.lib.http.middleware
+(ns clotho.lib.http.middleware
   (:require [clojure.tools.logging :as logging]
             [clojure.data.json :as json]))
 

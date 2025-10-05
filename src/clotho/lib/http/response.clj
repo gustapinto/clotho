@@ -1,4 +1,4 @@
-(ns knit.lib.http.response)
+(ns clotho.lib.http.response)
 
 (defn- error
   ([code retriable]

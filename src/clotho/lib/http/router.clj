@@ -1,6 +1,6 @@
-(ns knit.lib.http.router
-  (:require [knit.lib.http.middleware :as middleware]
-            [knit.lib.http.response :as response]))
+(ns clotho.lib.http.router
+  (:require [clotho.lib.http.middleware :as middleware]
+            [clotho.lib.http.response :as response]))
 
 (defn handle
   [routes]

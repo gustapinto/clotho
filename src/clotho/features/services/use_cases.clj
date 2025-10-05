@@ -1,4 +1,4 @@
-(ns knit.features.services.use-cases
+(ns clotho.features.services.use-cases
   (:require [clj-http.client :as client]))
 
 (defn call-service

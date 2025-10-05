@@ -1,6 +1,6 @@
-(ns knit.core-test
+(ns clotho.core-test
   (:require [clojure.test :refer :all]
-            [knit.core :refer :all]))
+            [clotho.core :refer :all]))
 
 (deftest a-test
   (testing "FIXME, I fail."
