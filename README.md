@@ -1,3 +1,3 @@
 # Clotho
 
-A :construction: under construction :construction: Clojure based service mesh
+A :construction: under active development :construction: Clojure based api gateway

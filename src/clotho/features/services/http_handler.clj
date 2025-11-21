@@ -1,16 +1,18 @@
 (ns clotho.features.services.http-handler
-  (:require [clojure.string :as string]
-            [clotho.features.services.use-cases :refer [call-service]]
-            [clotho.lib.http.response :refer [not-found]]))
+  (:require [clotho.features.services.use-cases :refer [call-service find-service-for-path]]
+            [clotho.lib.http.response :refer [not-found]]
+            [clotho.lib.http.middleware :refer [wrap-json]]))
 
 (defn get-all-services
   [services]
-  (fn [_] {:status 200 :body services}))
+  (fn [_] {:status 200
+           :body services}))
 
 (defn proxy-to-service
   [services]
-  (fn [request] (let [path (:uri request)
-                      service (some (fn [service]
-                                        (when (string/starts-with? path (:prefix service)) service)) services)]
-                  (cond (= service nil) (not-found request)
-                        :else (call-service request service)))))
+  (fn [request]
+    (let [path (:uri request)
+          service (find-service-for-path path services)]
+      (if (nil? service)
+        ((wrap-json not-found) request)
+        (call-service request service)))))

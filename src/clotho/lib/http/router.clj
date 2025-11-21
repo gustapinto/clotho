@@ -1,6 +1,6 @@
 (ns clotho.lib.http.router
-  (:require [clotho.lib.http.middleware :as middleware]
-            [clotho.lib.http.response :as response]))
+  (:require [clotho.lib.http.middleware :refer [wrap-error wrap-json wrap-log]]
+            [clotho.lib.http.response :refer [not-found]]))
 
 (defn handle
   [routes]
@@ -8,6 +8,7 @@
     (let [path (:uri request)
           handler (some (fn [[p h]]
                           (when (not= (re-matches p path) nil) h)) routes)]
-      ((middleware/wrap-log
-         (or handler (middleware/wrap-json response/not-found)))
+      ((wrap-log
+        (wrap-error
+         (or handler (wrap-json not-found))))
        request))))

@@ -1,8 +1,8 @@
 build:
 	lein uberjar
 
-start: build
+run/jar: build
 	java -jar target/uberjar/clotho.jar
 
-start/dev:
+run:
 	lein run

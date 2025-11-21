@@ -1,22 +1,23 @@
 (ns clotho.core
   (:gen-class)
   (:require [ring.adapter.jetty :as jetty]
-            [clotho.lib.http.router :as router]
-            [clotho.lib.http.middleware :as middleware]
-            [clotho.features.services.http-handler :as services-http]
-            [clotho.lib.file.file :as file]
-            [clj-yaml.core :as yaml]))
+            [clotho.lib.http.router :refer [handle]]
+            [clotho.lib.http.middleware :refer [wrap-json]]
+            [clotho.features.services.http-handler :refer [get-all-services proxy-to-service]]
+            [clotho.lib.file.file :refer [read-as-str]]
+            [clj-yaml.core :refer [parse-string]]))
 
 (defn routes
   [services]
-  [[#"/clotho/v1/services" (middleware/wrap-json (services-http/get-all-services services))]
-   [#"/(.*)" (services-http/proxy-to-service services)]])
+  [[#"/clotho/v1/services" (wrap-json (get-all-services services))]
+   [#"/(.*)" (proxy-to-service services)]])
 
 (defn -main
   [& _]
-  (let [raw-config (file/read-as-str "config.yaml")
-         config-map (yaml/parse-string raw-config)
-         services (:services config-map)]
-       (jetty/run-jetty
-        (router/handle (routes services))
-        {:port 9090})))
+  (let [raw-config (read-as-str "config.yaml")
+        config (parse-string raw-config)
+        services (or (:services config) [])
+        port (or (Integer/parseInt (:port config)) 9090)]
+    (jetty/run-jetty
+     (handle (routes services))
+     {:port port})))

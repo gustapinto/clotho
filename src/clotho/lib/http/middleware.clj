@@ -1,6 +1,7 @@
 (ns clotho.lib.http.middleware
-  (:require [clojure.tools.logging :as logging]
-            [clojure.data.json :as json]))
+  (:require [clojure.tools.logging :refer [infof]]
+            [clojure.data.json :refer [write-str]]
+            [clotho.lib.http.response :refer [internal-error]]))
 
 (defn wrap-log
   [handler]
@@ -9,7 +10,7 @@
           path (:uri request)
           res (handler request)
           status-code (:status res)]
-      (logging/infof "%s %s - %s" method path status-code)
+      (infof "%s %s - %s" method path status-code)
       res)))
 
 (defn wrap-json
@@ -22,4 +23,10 @@
       {:status status
        :headers (merge {"Content-Type", "application/json"} headers)
        :body (cond (or (= status 204) (= body nil)) nil
-                   :else (json/write-str body))})))
+                   :else (write-str body :escape-slash false))})))
+
+(defn wrap-error
+  [handler]
+  (fn [request]
+    (try (handler request)
+         (catch Exception e (internal-error e)))))
