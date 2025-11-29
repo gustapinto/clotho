@@ -1,0 +1,22 @@
+services:
+  datomic-transactor:
+    build:
+      context: "docker/transactor"
+      dockerfile: "Dockerfile"
+    restart: "on-failure:5"
+    ports:
+      - "4334:4334"
+    depends_on:
+      - "datomic-storage"
+
+  datomic-storage:
+    image: "postgres:17.7-alpine3.22"
+    restart: "on-failure:5"
+    ports:
+      - "5432:5432"
+    volumes:
+      - "./docker/transactor/migrations:/docker-entrypoint-initdb.d"
+    environment:
+      POSTGRES_PASSWORD: "datomic"
+      POSTGRES_USER: "datomic"
+      POSTGRES_DB: "datomic"

@@ -1,4 +1,5 @@
 port: "9090"
+db-uri: "datomic:sql://datomic?jdbc:postgresql://localhost:5432/datomic?user=datomic&password=datomic"
 
 services:
   - name: "example-service"
