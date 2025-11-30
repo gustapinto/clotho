@@ -8,6 +8,8 @@ services:
       - "4334:4334"
     depends_on:
       - "datomic-storage"
+    networks:
+      - "backend"
 
   datomic-storage:
     image: "postgres:17.7-alpine3.22"
@@ -16,7 +18,29 @@ services:
       - "5432:5432"
     volumes:
       - "./docker/transactor/migrations:/docker-entrypoint-initdb.d"
+    networks:
+      - "backend"
     environment:
       POSTGRES_PASSWORD: "datomic"
       POSTGRES_USER: "datomic"
       POSTGRES_DB: "datomic"
+
+  clotho:
+    image: "clojure:temurin-25-lein-alpine"
+    restart: "no"
+    working_dir: "/clotho"
+    command: "tail -F /dev/null" # Keep alive
+    tty: true
+    ports:
+      - "9090:9090"
+    volumes:
+      - "./:/clotho"
+    networks:
+      - "backend"
+    environment:
+      CLOTHO_API_PORT: "9090"
+      CLOTHO_DB_URI: "datomic:sql://datomic?jdbc:postgresql://datomic-storage:5432/datomic?user=datomic&password=datomic"
+
+networks:
+  backend:
+    driver: bridge

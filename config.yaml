@@ -1,7 +1,0 @@
-port: "9090"
-db-uri: "datomic:sql://datomic?jdbc:postgresql://localhost:5432/datomic?user=datomic&password=datomic"
-
-services:
-  - name: "example-service"
-    prefix: "/exs"
-    base-url: "https://webhook.site/ed111a2f-21e9-4f22-876b-3cf1db0c6aec"

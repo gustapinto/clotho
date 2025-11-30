@@ -2,3 +2,7 @@
 GET http://localhost:9090/clotho/v1/services
 Accept: application/json
 ###
+
+# @name RedirectToService
+GET http://localhost:9090/sample
+###

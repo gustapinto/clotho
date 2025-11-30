@@ -27,3 +27,13 @@
                 :where [?e :service/prefix ?prefix]]
         results (d/q query db prefix)]
     (ffirst results)))
+
+(defn find-all-services
+  [conn]
+  (let [db (d/db conn)
+        query '[:find (pull ?e [:service/name
+                                :service/prefix
+                                :service/base-url])
+                :where [?e :service/name]]
+        results (d/q query db)]
+    (flatten results)))
