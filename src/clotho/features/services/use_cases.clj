@@ -1,7 +1,7 @@
 (ns clotho.features.services.use-cases
   (:require [clj-http.client :as client]
             [clojure.string :refer [split]]
-            [clotho.features.services.repository :as repo]))
+            [clotho.features.services.datomic :as repo]))
 
 (defn call-service
   [request service]
@@ -13,17 +13,22 @@
         response (client/request service-request)]
     response))
 
+(defn- entity->service
+  [service]
+  (when service {:name (:service/name service)
+                 :prefix (:service/prefix service)
+                 :base-url (:service/base-url service)}))
+
 (defn find-service-for-path
-  "return a service map if path is target of some service, else nil"
   [path conn]
   (let [path-parts (split path #"/")
         prefix (get path-parts 1)
-        service (repo/find-service-by-prefix conn (str "/" prefix))]
-    {:name (:service/name service)
-     :prefix (:service/prefix service)
-     :base-url (:service/base-url service)}))
+        service (repo/query-service-by-prefix conn (str "/" prefix))
+        mapped-service (entity->service service)]
+    mapped-service))
 
 (defn find-all-services
   [conn]
-  (let [services (repo/find-all-services conn)]
-  services))
+  (let [services (repo/query-all-services conn)
+        mapped-services (map entity->service services)]
+  mapped-services))
