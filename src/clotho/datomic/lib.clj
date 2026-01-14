@@ -1,4 +1,4 @@
-(ns clotho.lib.datomic.datomic
+(ns clotho.datomic.lib
   (:require [datomic.api :as d]))
 
 (defn connect

@@ -1,4 +1,4 @@
-(ns clotho.features.services.datomic
+(ns clotho.datomic.service
   (:require [datomic.api :as d]))
 
 (def service-schema [{:db/ident :service/name
@@ -24,7 +24,7 @@
                 :where [?e :service/prefix ?prefix]]
         results (try
                   (d/q query db prefix)
-                  (catch Exception _))]
+                  (catch Exception _ []))]
     (ffirst results)))
 
 (defn query-all-services
@@ -39,8 +39,14 @@
                   (catch Exception _))]
     (flatten results)))
 
-(defn insert-sample-service
-  [conn]
-  @(d/transact conn [{:service/name "sample"
-                      :service/prefix "/sample"
-                      :service/base-url "https://webhook.site/1b6fd054-89f0-4239-8a77-a5d9227991e4"}]))
+(defn upsert-service
+  [db service]
+  @(d/transact db [service]))
+
+(def ^:private sample-service {:service/name "sample"
+                               :service/prefix "/sample"
+                               :service/base-url "https://webhook.site/1b6fd054-89f0-4239-8a77-a5d9227991e4"})
+
+(defn upsert-sample-service
+  [db]
+  (upsert-service db sample-service))

@@ -1,6 +1,6 @@
-(ns clotho.lib.http.response)
+(ns clotho.http.response)
 
-(defn- error
+(defn ^:private error
   ([code retriable]
    {:error code :retriable retriable})
 
@@ -8,9 +8,9 @@
    {:error code :retriable retriable :details details}))
 
 (defn not-found
-  [request]
+  [{:keys [uri]}]
   {:status 404
-   :body (error "route-not-found" false {:message "route not found" :route (:uri request)})})
+   :body (error "route-not-found" false {:message "route not found" :route uri})})
 
 (defn internal-error
   [e]
