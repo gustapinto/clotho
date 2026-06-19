@@ -17,3 +17,13 @@
   (when service #:service{:name name
                           :prefix prefix
                           :base-url base-url}))
+
+(defn request-body->service
+  [{:strs [name
+           prefix
+           base-url]
+    :as request-body}]
+  (when request-body
+    {:name name
+     :prefix prefix
+     :base-url base-url}))

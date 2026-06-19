@@ -16,3 +16,8 @@
   [e]
   {:status 500
    :body (error "internal-error" true {:message (.getMessage e)})})
+
+(defn bad-request
+  []
+  {:status 400
+   :body (error "internal-error" false)})
