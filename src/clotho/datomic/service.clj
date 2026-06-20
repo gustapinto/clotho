@@ -1,5 +1,6 @@
 (ns clotho.datomic.service
-  (:require [datomic.api :as d]))
+  (:require [datomic.api :as d]
+            [clojure.core.memoize :as memoize]))
 
 (def service-schema [{:db/ident :service/name
                       :db/valueType :db.type/string
@@ -14,7 +15,7 @@
                       :db/valueType :db.type/string
                       :db/cardinality :db.cardinality/one}])
 
-(defn query-service-by-prefix
+(defn ^{:clojure.core.memoize/args-fn rest} query-service-by-prefix
   [conn prefix]
   (let [db (d/db conn)
         query '[:find (pull ?e [:service/name
@@ -27,7 +28,9 @@
                   (catch Exception _ []))]
     (ffirst results)))
 
-(defn query-all-services
+(def cached-query-service-by-prefix (memoize/memo query-service-by-prefix))
+
+(defn ^{:clojure.core.memoize/args-fn rest} query-all-services
   [conn]
   (let [db (d/db conn)
         query '[:find (pull ?e [:service/name
@@ -39,6 +42,11 @@
                   (catch Exception _))]
     (flatten results)))
 
+(def cached-query-all-services (memoize/memo query-all-services))
+
 (defn upsert-service
-  [db service]
-  @(d/transact db [service]))
+  [conn service]
+  @(d/transact conn [service])
+  (println (:service/prefix service))
+  (memoize/memo-clear! cached-query-service-by-prefix [conn (:service/prefix service)])
+  (memoize/memo-clear! cached-query-all-services [conn]))

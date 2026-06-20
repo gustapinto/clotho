@@ -34,13 +34,13 @@
   [db path]
   (->> path
        parse-prefix
-       (repo/query-service-by-prefix db)
+       (repo/cached-query-service-by-prefix db)
        datomic-entity->service))
 
 (defn find-all-services
   [db]
   (->> db
-       repo/query-all-services
+       repo/cached-query-all-services
        (map datomic-entity->service)))
 
 (defn upsert-service

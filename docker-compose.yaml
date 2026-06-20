@@ -27,10 +27,12 @@ services:
 
   clotho:
     image: "clojure:temurin-25-lein-alpine"
-    restart: "no"
+    restart: "on-failure:3"
     working_dir: "/clotho"
-    command: "lein run"
+    command: "tail -F /dev/null" # Keep alive
     tty: true
+    depends_on:
+      - "datomic-transactor"
     ports:
       - "9090:9090"
     volumes:

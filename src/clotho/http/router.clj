@@ -7,8 +7,6 @@
    request-method
    route-path-expr
    route-method]
-  (println "req" request-method request-uri)
-  (println "route" route-method route-path-expr)
   (and (boolean (re-matches route-path-expr request-uri))
        (or (= route-method :any)
            (= route-method request-method))))
