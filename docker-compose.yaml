@@ -29,7 +29,7 @@ services:
     image: "clojure:temurin-25-lein-alpine"
     restart: "no"
     working_dir: "/clotho"
-    command: "tail -F /dev/null" # Keep alive
+    command: "lein run"
     tty: true
     ports:
       - "9090:9090"

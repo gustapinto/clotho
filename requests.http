@@ -1,8 +1,19 @@
+# @name UpsertService
+POST http://localhost:9090/clotho/v1/services
+Content-Type: : application/json
+
+{
+  "name": "foo-service",
+  "prefix": "/foo",
+  "base-url": "https://webhook.site/3d76bb5f-17a8-4c00-8eca-656c022a9427"
+}
+###
+
 # @name ListServices
 GET http://localhost:9090/clotho/v1/services
 Accept: application/json
 ###
 
 # @name RedirectToService
-GET http://localhost:9090/sample
+GET http://localhost:9090/foo
 ###

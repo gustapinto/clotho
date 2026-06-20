@@ -42,11 +42,3 @@
 (defn upsert-service
   [db service]
   @(d/transact db [service]))
-
-(def ^:private sample-service {:service/name "sample"
-                               :service/prefix "/sample"
-                               :service/base-url "https://webhook.site/1b6fd054-89f0-4239-8a77-a5d9227991e4"})
-
-(defn upsert-sample-service
-  [db]
-  (upsert-service db sample-service))
