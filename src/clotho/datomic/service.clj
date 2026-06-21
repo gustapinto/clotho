@@ -47,6 +47,5 @@
 (defn upsert-service
   [conn service]
   @(d/transact conn [service])
-  (println (:service/prefix service))
   (memoize/memo-clear! cached-query-service-by-prefix [conn (:service/prefix service)])
   (memoize/memo-clear! cached-query-all-services [conn]))
